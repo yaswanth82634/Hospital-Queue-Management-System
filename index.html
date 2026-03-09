@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediQueue · Hospital queue management</title>
+  <!-- Font & icons (clean) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <!-- header / navbar -->
+    <header class="navbar">
+      <div class="nav-brand">
+        <i class="fas fa-clinic-medical" style="color: #2d7a9b;"></i>
+        <span>MediQueue</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#" class="active">Dashboard</a>
+        <a href="#">Patients</a>
+        <a href="#">Queue</a>
+        <a href="#">Doctors</a>
+      </nav>
+      <div class="nav-profile">
+        <i class="fas fa-bell"></i>
+        <div class="avatar"></div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- dashboard cards -->
+      <section class="cards-grid" id="dashboardCards">
+        <div class="card">
+          <div class="card-icon blue"><i class="fas fa-users"></i></div>
+          <div class="card-info">
+            <span class="card-label">Total patients today</span>
+            <span class="card-value" id="totalPatients">0</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon yellow"><i class="fas fa-hourglass-half"></i></div>
+          <div class="card-info">
+            <span class="card-label">Patients waiting</span>
+            <span class="card-value" id="waitingCount">0</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon green"><i class="fas fa-check-circle"></i></div>
+          <div class="card-info">
+            <span class="card-label">Patients completed</span>
+            <span class="card-value" id="completedCount">0</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon teal"><i class="fas fa-clock"></i></div>
+          <div class="card-info">
+            <span class="card-label">Avg. waiting time</span>
+            <span class="card-value" id="avgWait">0 min</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- two column layout: registration + doctor panel -->
+      <div class="dashboard-panels">
+        <!-- patient registration card -->
+        <div class="panel registration-panel">
+          <h3><i class="fas fa-user-plus" style="margin-right: 8px;"></i> Patient registration</h3>
+          <form id="registrationForm">
+            <div class="form-group">
+              <label for="patientName">Patient name</label>
+              <input type="text" id="patientName" placeholder="e.g. John Smith" required autocomplete="off">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" placeholder="years" min="0" max="120" required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone number</label>
+                <input type="tel" id="phone" placeholder="+1 234 567 890" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="department">Department</label>
+              <select id="department" required>
+                <option value="" disabled selected>— select —</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="General Medicine">General Medicine</option>
+                <option value="Pediatrics">Pediatrics</option>
+                <option value="Orthopedics">Orthopedics</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-primary" id="generateTokenBtn">
+              <i class="fas fa-ticket-alt"></i> Generate token
+            </button>
+          </form>
+        </div>
+
+        <!-- doctor panel + quick actions -->
+        <div class="panel doctor-panel">
+          <h3><i class="fas fa-user-md" style="margin-right: 8px;"></i> Doctor’s desk</h3>
+          <div class="doctor-actions">
+            <button class="btn-outline" id="callNextBtn"><i class="fas fa-forward"></i> Call next patient</button>
+            <button class="btn-outline" id="markCompletedBtn"><i class="fas fa-check-double"></i> Mark completed</button>
+          </div>
+          <!-- small status preview: currently serving (if any) -->
+          <div class="serving-indicator" id="servingPreview">
+            <span class="label">Now serving:</span>
+            <span class="token-badge" id="currentServingToken">—</span>
+            <span id="currentServingName">(no patient)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- queue display table -->
+      <div class="queue-table-section">
+        <div class="table-header">
+          <h3><i class="fas fa-list-ol"></i> Live queue</h3>
+          <span class="queue-stats" id="queueCount">0 patients</span>
+        </div>
+        <div class="table-wrapper">
+          <table id="queueTable">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Patient name</th>
+                <th>Department</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="queueBody">
+              <!-- dynamic rows inserted via JS -->
+              <tr><td colspan="4" style="text-align: center; color: #8b9eb0;">No patients in queue yet</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
